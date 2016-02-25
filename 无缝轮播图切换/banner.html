@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+ <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+	<title>无缝轮播图滚动</title>
+	<meta name="Keywords" content="关键字,关键字">
+	<meta name="description" content="">
+	
+	<!--css,js--> 
+	<style type="text/css">
+		*{margin:0px;padding:0px}
+		body{font-size:12px;font-family:"微软雅黑";color:#666;}
+		.banner{width:100%;height:200px;overflow:hidden;position:relative;}
+		#banner{width:100%;height:100%;position:absolute;top:0;left:0;}
+		#banner li{width:100%;height:100%;list-style:none;float:left;}
+		ol{position:absolute;bottom:20px;}
+		ol li{padding:5px;background:#fff;list-style:none;border-radius:50%;float:left;margin:0 5px;}
+		ol li.banner_sel{background:red;}
+		.js{width:100%;}
+		.sm{width:calc(100% - 20px);padding:0 10px;}
+	</style>
+ 
+ </head>
+<body>
+	<div class="banner">
+		<ul id="banner">
+			<li>
+				<img src="img/b1.png" width="100%" height="100%">
+			</li>
+			<li>
+				<img src="img/b2.png" width="100%" height="100%">
+			</li>
+			<li>
+				<img src="img/b3.png" width="100%" height="100%">
+			</li>
+		</ul>
+        <ol id="banner_sel">
+            <li class="banner_sel"></li>
+        </ol>
+	</div>
+	<div class="js">
+		<p>本插件 需要配合 touch.js 类库来进行使用 由 panweijie.com提供</p>
+		<p>由于本人偷懒，所以 此次 banner切换插件为 jq版的，js版的尚未提供</p>
+		{<br/>
+		<div class="sm">
+	        移动端 banner切换 无缝<br/>
+	        banner({<br/>
+	        	bannerid:"bannerid",<br/>
+	        	banner_img:"banner_img",<br/>
+	        	time:"time",<br/>
+	        	banner_sel_id:"banner_sel_id",<br/>
+	        	banner_sel:"banner_sel",<br/>
+	        	banner_sel_class:"banner_sel_class",<br/>
+	        	direction:"direction"<br/>
+	        });<br/>
+	        bannerid: 装载banner图的容器 id、class、标签<br/>
+	        banner_img: banner图的标签 class、标签<br/>
+	        time: 自动切换的时间 以秒为单位<br/>
+	        banner_sel_id: 装载banner焦点图的容器 id、class、标签<br/>
+	        banner_sel: banner焦点图 class、标签<br/>
+	        banner_sel_class: 表示 banner焦点图 选中状态 class<br/>
+	        direction : 左右滑动、上下滑动  left、top<br/>
+	    </div>
+	    }
+
+	    <h1>整体界面布局，可参考本案例</h1>
+	</div>
+	<script src="../原生JS封装touch/touch.js"></script>
+	<script src="../额外控件/jquery-2.1.1.js"></script>
+	<script src="seamless_banner.js"></script>
+	<script>
+		$(function(){
+			/*此处为了兼容各大手机屏幕分辨率，是图片无拉伸。是个偷懒的做法*/
+			/* 所需参数：屏幕宽度*/
+            var w_body = $(window).width();
+            /*banner 比例0.37333*/
+            $("#banner").css({
+                height:w_body*0.53333
+            });
+            $("#banner li").css({
+                width:w_body
+            });
+			// 动态判断 banner图 的张数，让焦点图的数量与banner图的数量一致
+            var banner_length = $("#banner").find("li").length;
+            if(banner_length > 0){
+                var banner_icon = "";
+                for(var i = 1;i < banner_length;i++){
+                    banner_icon += "<li></li>"
+                }
+                $("#banner_sel").append(banner_icon);
+            }
+            // 先让 焦点图的数量 固定了，在计算 距离左边的距离，不然会出错
+            var b_ser_width = $("#banner_sel").width();
+            var b_ser_left = (w_body - b_ser_width) /2;
+            // 让banner的 焦点图 绝对居中
+            $("#banner_sel").css({left:b_ser_left});
+            /* banner切换效果 */
+            pl_plug.banner({bannerid:"banner",banner_img:"li",time:"3",banner_sel_id:"#banner_sel",banner_sel:"li",banner_sel_class:"banner_sel",direction:"left"});
+		});
+	</script>
+</body>
+</html>
